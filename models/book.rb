@@ -11,7 +11,7 @@ class Book
 
     def search(params={})
       options = handle_search_params(params)
-      cache.fetch(cache_key(options), 60) do
+      cache.fetch(cache_key(options), settings.cache_ttl) do
         books, total_items = google_books_search(options)
         books = WillPaginate::Collection.create(options[:page], options[:per_page], total_items) do |pager|
           pager.replace books
@@ -37,7 +37,7 @@ class Book
         :page => params[:page],
         :count => params[:per_page],
         :country => params[:country],
-        :api_key => "AIzaSyApfbQ8ByIK99wF7SKDtsiz9mmKp7TNFqQ"
+        :api_key => settings.api_key
       }
     end
 
@@ -54,14 +54,17 @@ class Book
       {
         :query => params[:query] || "Ruby on Rails",
         :page => params[:page] ? params[:page].to_i : 1,
-        :per_page => params[:per_page] ? params[:per_page].to_i : 20,
-        :country => params[:country]|| "us"
+        :per_page => params[:per_page] ? params[:per_page].to_i : settings.per_page,
+        :country => params[:country]|| settings.country
       }
+    end
 
+    def settings
+      Sinatra::Application.settings
     end
 
     def cache
-      Sinatra::Application.settings.cache
+      settings.cache
     end
 
   end

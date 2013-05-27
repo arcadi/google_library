@@ -1,7 +1,6 @@
-require 'rubygems'
-require 'sinatra'
 require './config/init'
 
+config_file './config/config.yml'
 set :cache, Dalli::Client.new
 
 get '/' do
