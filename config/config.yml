@@ -2,3 +2,4 @@ api_key: "AIzaSyApfbQ8ByIK99wF7SKDtsiz9mmKp7TNFqQ"
 country: "us"
 per_page: 20
 cache_ttl: 60
+query: "Ruby on Rails"

@@ -52,7 +52,7 @@ class Book
 
     def handle_search_params(params)
       {
-        :query => params[:query] || "Ruby on Rails",
+        :query => params[:query] || settings.query,
         :page => params[:page] ? params[:page].to_i : 1,
         :per_page => params[:per_page] ? params[:per_page].to_i : settings.per_page,
         :country => params[:country]|| settings.country
