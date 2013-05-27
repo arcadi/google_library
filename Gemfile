@@ -5,6 +5,7 @@ gem "sinatra"
 gem "haml"
 gem "sass"
 
+gem 'memcachier'
 gem 'dalli'
 
 gem 'googlebooks', :git => 'https://github.com/arcadi/GoogleBooks.git'
