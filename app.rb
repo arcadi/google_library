@@ -2,9 +2,7 @@ require 'rubygems'
 require 'sinatra'
 require './config/init'
 
-helpers do
-
-end
+set :cache, Dalli::Client.new
 
 get '/' do
   haml :index
