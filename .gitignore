@@ -2,3 +2,4 @@
 .rvmrc
 .bundle
 *.swp
+.sass-cache

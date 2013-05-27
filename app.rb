@@ -11,6 +11,12 @@ get '/' do
 end
 
 get '/books?' do
-  @books = Book.search
+  @books = Book.search(params)
   haml :books
+end
+
+# SASS stylesheet
+get '/stylesheets/style.css' do
+  content_type 'text/css', :charset => 'utf-8'
+  sass :style
 end

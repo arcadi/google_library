@@ -1,4 +1,3 @@
-require 'googlebooks'
 class Book
   attr_reader :authors, :title, :thumbnail
 
@@ -10,30 +9,50 @@ class Book
 
   class << self
 
-    def search(query="Ruby on Rails", params={})
-      options = handle_search_options(params)
-      response = GoogleBooks.search(query, options)
-      books = response.map { |book| self.new(handle_google_book(book)) }
+    def search(params={})
+      options = handle_search_params(params)
+      books, total_items = google_books_search(options)
+      books = WillPaginate::Collection.create(options[:page], options[:per_page], total_items) do |pager|
+        pager.replace books
+      end
       books
     end
 
     private
 
+    def google_books_search(params)
+      response = GoogleBooks.search(params[:query], handle_google_search_params(params))
+      books = response.map { |book| self.new(handle_google_book(book)) }
+      [books, response.total_items]
+    end
+
+    def handle_google_search_params(params)
+      {
+        :page => params[:page],
+        :count => params[:per_page],
+        :country => params[:country],
+        :api_key => "AIzaSyApfbQ8ByIK99wF7SKDtsiz9mmKp7TNFqQ"
+      }
+    end
+
+
+
     def handle_google_book(item)
       {
         :title => item.title,
         :authors => item.authors.size > 0 ? item.authors : nil,
-        :thumbnail => item.image_link
+        :thumbnail => item.image_link || "/images/blank_book.jpg"
       }
     end
 
-    def handle_search_options(params)
+    def handle_search_params(params)
       {
-        :page => params[:page] || 1,
-        :count => params[:per_page] || 20,
-        :country => params[:country] || "us",
-        :api_key => "AIzaSyApfbQ8ByIK99wF7SKDtsiz9mmKp7TNFqQ"
+        :query=>params[:query] || "Ruby on Rails",
+        :page => params[:page] ? params[:page].to_i : 1,
+        :per_page => params[:per_page] ? params[:per_page].to_i : 20,
+        :country => params[:country]|| "us"
       }
+
     end
 
   end
