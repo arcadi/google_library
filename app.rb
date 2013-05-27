@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra'
+require './config/init'
 
 helpers do
 
@@ -10,5 +11,6 @@ get '/' do
 end
 
 get '/books?' do
+  @books = Book.search
   haml :books
 end

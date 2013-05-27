@@ -1,1 +1,13 @@
 %h2 Books
+
+%table.table.table-striped
+  - @books.each do |book|
+    %tr
+      %td
+        %img{:src=>book.thumbnail, :alt=>book.title}
+      %td
+        %h4
+          = book.title
+
+        %b Authors:
+        = book.authors || "none"
