@@ -13,5 +13,3 @@ require 'memcachier'
 require 'dalli'
 
 require "./models/book"
-#require "pry"
-#require "pry-debugger"

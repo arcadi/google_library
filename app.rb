@@ -1,7 +1,8 @@
 require './config/init'
 
-config_file './config/config.yml'
+set :root, File.dirname(__FILE__)
 set :cache, Dalli::Client.new
+config_file './config/config.yml'
 
 get '/' do
   haml :index
